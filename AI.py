@@ -16,5 +16,5 @@ class AI(Players):
         super(AI, self).Render(screen)
 
     # Will be used to control the movement of the AI players
-    def UpdatePosition(self):
+    # def UpdatePosition(self):
         # The AI part will go here
