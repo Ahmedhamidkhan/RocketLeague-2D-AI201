@@ -33,7 +33,7 @@ class Ball:
             if self.ballX_change > 0:
                 self.ballX_change -= 0.0001
             elif self.ballX_change < 0:
-                self.ballY_change += 0.0001
+                self.ballX_change += 0.0001
             if self.ballY_change > 0:
                 self.ballY_change -= 0.0001
             elif self.ballY_change < 0:
