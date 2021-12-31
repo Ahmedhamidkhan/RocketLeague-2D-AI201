@@ -5,10 +5,6 @@ import TextureManager as tm
 class Background:
     # Constructor
     def __init__(self):
-        self.texture = None
-
-    # Creates the background texture
-    def CreateBackgroundTexture(self):
         self.texture = tm.Texture("Images/background.jpeg")
 
     # Function to render the background

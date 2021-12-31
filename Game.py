@@ -2,6 +2,7 @@ import pygame
 import User
 import AI
 import Background
+import Ball
 
 
 # Main game class
@@ -15,18 +16,13 @@ class Game:
             self.running = False
 
         self.background = Background.Background()
-        self.player = User.User()
-        self.ai = AI.AI()
+        self.player = User.User("Images/player1.png")
+        self.ai = AI.AI("Images/player2.png")
+        self.ball = Ball.Ball()
         self.screen = pygame.display.set_mode((1000, 585))
         pygame.display.set_caption("Cars")
         self.icon = pygame.image.load('Images/sport-car.png')
         pygame.display.set_icon(self.icon)
-
-    # Function to initialize variable values
-    def Initialization(self):
-        self.background.CreateBackgroundTexture()
-        self.player.CreatePlayerTexture("Images/player1.png")
-        self.ai.CreatePlayerTexture("Images/player2.png")
 
     # Returns the variable that tells if game is running or not
     def isRunning(self):
@@ -34,6 +30,7 @@ class Game:
 
     # Function to handle all events
     def handleEvent(self):
+
         # Runs through all pygame events
         for event in pygame.event.get():
             # If the close button is pressed, game ends
@@ -59,12 +56,18 @@ class Game:
 
         # Updating players to new positions
         self.player.UpdatePosition()
+        # self.ai.UpdatePosition(self.ball)
+        self.ball.UpdatePosition()
+
+        self.ball.CollisionCheck(self.player)
+        self.ball.CollisionCheck(self.ai)
 
     # Rendering everything to the screen
     def Render(self):
         self.background.Render(self.screen)
         self.player.Render(self.screen)
         self.ai.Render(self.screen)
+        self.ball.Render(self.screen)
         pygame.display.update()
 
     # Clean memory when program is closed
