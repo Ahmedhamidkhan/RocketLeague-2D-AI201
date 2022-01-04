@@ -24,38 +24,62 @@ class Ball:
 
     def CollisionCheck(self, other):
         if self.rect.colliderect(other.rect):
-            rel = (other.playerY + (self.size / 2)) - (self.ballY + (self.size / 2))
-            norm = rel / (self.size / 2)
-            bounce = norm * (5 * PI / 12)
-            self.ballX_change = self.ball_speed * math.cos(bounce)
-            self.ballY_change = self.ball_speed * -(math.sin(bounce))
+            if (other.playerX + other.size/2 + self.size) > self.ballX > (other.playerX - 5) and (other.playerY + 5) > self.ballY > (other.playerY - 5):
+                self.ballX_change = self.ball_speed
+                self.ballY_change = 0
+            elif (other.playerX - self.size) < self.ballX < (other.playerX + 5) and (other.playerY + 5) > self.ballY > (other.playerY - 5):
+                self.ballX_change = -self.ball_speed
+                self.ballY_change = 0
+            elif (other.playerY - self.size) < self.ballY < (other.playerY + 5) and (other.playerX + 5) > self.ballX > (other.playerX - 5):
+                self.ballX_change = 0
+                self.ballY_change = -self.ball_speed
+            elif (other.playerY + other.size/2 + self.size) > self.ballY > (other.playerY - 5) and (other.playerX + 5) > self.ballX > (other.playerX - 5):
+                self.ballX_change = 0
+                self.ballY_change = self.ball_speed
+            elif self.ballX > other.playerX and self.ballY > other.playerY:
+                self.ballX_change = self.ball_speed
+                self.ballY_change = self.ball_speed
+            elif self.ballX > other.playerX and self.ballY < other.playerY:
+                self.ballX_change = self.ball_speed
+                self.ballY_change = -self.ball_speed
+            elif self.ballX < other.playerX and self.ballY < other.playerY:
+                self.ballX_change = -self.ball_speed
+                self.ballY_change = -self.ball_speed
+            elif self.ballX < other.playerX and self.ballY > other.playerY:
+                self.ballX_change = -self.ball_speed
+                self.ballY_change = self.ball_speed
         else:
+            ballSlowness = 0.0004
             if self.ballX_change > 0:
-                self.ballX_change -= 0.0001
+                self.ballX_change -= ballSlowness
             if self.ballX_change < 0:
-                self.ballX_change += 0.0001
+                self.ballX_change += ballSlowness
             if self.ballY_change > 0:
-                self.ballY_change -= 0.0001
+                self.ballY_change -= ballSlowness
             if self.ballY_change < 0:
-                self.ballY_change += 0.0001
+                self.ballY_change += ballSlowness
+
+    def UpdateRect(self):
+        self.rect = self.texture.get_rect(topleft=(self.ballX, self.ballY))
 
     def UpdatePosition(self):
+        self.ballX += self.ballX_change
         if self.ballX < 20:
             self.ballX = 20
-            self.ballY_change = -self.ballY_change
+        else:
+            self.ballX_change = -self.ballX_change
+
         if self.ballX > 936:
             self.ballX = 936
-            self.ballY_change = -self.ballY_change
+        else:
+            self.ballX_change = -self.ballX_change
 
-        self.ballX += self.ballX_change
-
+        self.ballY += self.ballY_change
         if self.ballY < 28:
             self.ballY = 28
-            self.ballX_change = -self.ballX_change
+        else:
+            self.ballY_change = -self.ballY_change
         if self.ballY > 521:
             self.ballY = 521
-            self.ballX_change = -self.ballX_change
-
-        self.ballY += self.ballX_change
-
-        self.rect = self.texture.get_rect(topleft=(self.ballX, self.ballY))
+        else:
+            self.ballY_change = -self.ballY_change

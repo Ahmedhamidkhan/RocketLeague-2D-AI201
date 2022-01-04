@@ -14,7 +14,6 @@ class User(Players):
 
     # Updating the position of the user car
     def UpdatePosition(self):
-        super(User, self).UpdatePosition()
         self.playerX += self.playerX_change
         if self.playerX <= 20:
             self.playerX = 20

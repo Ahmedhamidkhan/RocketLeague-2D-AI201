@@ -31,6 +31,9 @@ class Game:
     # Function to handle all events
     def handleEvent(self):
 
+        self.player.UpdateRect()
+        self.ball.UpdateRect()
+
         # Runs through all pygame events
         for event in pygame.event.get():
             # If the close button is pressed, game ends
@@ -54,13 +57,15 @@ class Game:
                 if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     self.player.playerY_change = 0
 
+        self.ball.CollisionCheck(self.player)
+
         # Updating players to new positions
         self.player.UpdatePosition()
         # self.ai.UpdatePosition(self.ball)
         self.ball.UpdatePosition()
 
-        self.ball.CollisionCheck(self.player)
-        self.ball.CollisionCheck(self.ai)
+
+        # self.ball.CollisionCheck(self.ai)
 
     # Rendering everything to the screen
     def Render(self):
