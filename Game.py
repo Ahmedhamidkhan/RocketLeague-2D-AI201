@@ -23,6 +23,10 @@ class Game:
         pygame.display.set_caption("Cars")
         self.icon = pygame.image.load('Images/sport-car.png')
         pygame.display.set_icon(self.icon)
+        self.r = False
+        self.l = False
+        self.u = False
+        self.d = False
 
     # Returns the variable that tells if game is running or not
     def isRunning(self):
@@ -43,18 +47,48 @@ class Game:
             # Players movement for now
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    self.player.playerX_change = -0.3
+                    self.l = True
+                    self.player.playerX_change -= 0.3
                 if event.key == pygame.K_RIGHT:
+                    self.r = True
                     self.player.playerX_change = 0.3
                 if event.key == pygame.K_UP:
+                    self.u = True
                     self.player.playerY_change = -0.3
                 if event.key == pygame.K_DOWN:
+                    self.d = True
                     self.player.playerY_change = 0.3
 
+            if self.r:
+                self.player.ChangeTex(self.player.playerRight)
+            if self.l:
+                self.player.ChangeTex(self.player.playerLeft)
+            if self.u:
+                self.player.ChangeTex(self.player.playerUp)
+            if self.d:
+                self.player.ChangeTex(self.player.playerDown)
+
+            if self.r and self.u:
+                self.player.ChangeTex(self.player.playerUpRight)
+            if self.r and self.d:
+                self.player.ChangeTex(self.player.playerDownRight)
+            if self.l and self.u:
+                self.player.ChangeTex(self.player.playerUpLeft)
+            if self.l and self.d:
+                self.player.ChangeTex(self.player.playerDownLeft)
+
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_LEFT:
+                    self.l = False
                     self.player.playerX_change = 0
-                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                if event.key == pygame.K_RIGHT:
+                    self.r = False
+                    self.player.playerX_change = 0
+                if event.key == pygame.K_UP:
+                    self.u = False
+                    self.player.playerY_change = 0
+                if event.key == pygame.K_DOWN:
+                    self.d = False
                     self.player.playerY_change = 0
 
         self.ball.CollisionCheck(self.player)
