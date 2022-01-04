@@ -32,21 +32,29 @@ class Ball:
         else:
             if self.ballX_change > 0:
                 self.ballX_change -= 0.0001
-            elif self.ballX_change < 0:
+            if self.ballX_change < 0:
                 self.ballX_change += 0.0001
             if self.ballY_change > 0:
                 self.ballY_change -= 0.0001
-            elif self.ballY_change < 0:
+            if self.ballY_change < 0:
                 self.ballY_change += 0.0001
 
     def UpdatePosition(self):
-        if self.ballX <= 20 or self.ballX >= 936:
-            self.ballX_change = -self.ballX_change
+        if self.ballX < 20:
+            self.ballX = 20
+            self.ballY_change = -self.ballY_change
+        if self.ballX > 936:
+            self.ballX = 936
+            self.ballY_change = -self.ballY_change
 
         self.ballX += self.ballX_change
 
-        if self.ballY <= 28 or self.ballY >= 521:
-            self.ballY_change = -self.ballY_change
+        if self.ballY < 28:
+            self.ballY = 28
+            self.ballX_change = -self.ballX_change
+        if self.ballY > 521:
+            self.ballY = 521
+            self.ballX_change = -self.ballX_change
 
         self.ballY += self.ballX_change
 
