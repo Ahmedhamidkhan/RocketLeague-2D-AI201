@@ -12,7 +12,7 @@ class Ball:
         self.ballY = 585 / 2 - self.size / 2
         self.ballX_change = 0
         self.ballY_change = 0
-        self.ball_speed = 0.3
+        self.ball_speed = 0.35
         self.texture = tm.Texture("Images/ball.png")
         self.texture = pygame.transform.scale(self.texture, (self.size, self.size))
         self.rect = self.texture.get_rect(topleft=(self.ballX, self.ballY))
@@ -24,16 +24,20 @@ class Ball:
 
     def CollisionCheck(self, other):
         if self.rect.colliderect(other.rect):
-            if (other.playerX + other.size/2 + self.size) > self.ballX > (other.playerX - 5) and (other.playerY + 5) > self.ballY > (other.playerY - 5):
+            if (other.playerX + other.size / 2 + self.size) > self.ballX > (other.playerX - 5) and (
+                    other.playerY + 5) > self.ballY > (other.playerY - 5):
                 self.ballX_change = self.ball_speed
                 self.ballY_change = 0
-            elif (other.playerX - self.size) < self.ballX < (other.playerX + 5) and (other.playerY + 5) > self.ballY > (other.playerY - 5):
+            elif (other.playerX - self.size) < self.ballX < (other.playerX + 5) and (other.playerY + 5) > self.ballY > (
+                    other.playerY - 5):
                 self.ballX_change = -self.ball_speed
                 self.ballY_change = 0
-            elif (other.playerY - self.size) < self.ballY < (other.playerY + 5) and (other.playerX + 5) > self.ballX > (other.playerX - 5):
+            elif (other.playerY - self.size) < self.ballY < (other.playerY + 5) and (other.playerX + 5) > self.ballX > (
+                    other.playerX - 5):
                 self.ballX_change = 0
                 self.ballY_change = -self.ball_speed
-            elif (other.playerY + other.size/2 + self.size) > self.ballY > (other.playerY - 5) and (other.playerX + 5) > self.ballX > (other.playerX - 5):
+            elif (other.playerY + other.size / 2 + self.size) > self.ballY > (other.playerY - 5) and (
+                    other.playerX + 5) > self.ballX > (other.playerX - 5):
                 self.ballX_change = 0
                 self.ballY_change = self.ball_speed
             elif self.ballX > other.playerX and self.ballY > other.playerY:
@@ -83,3 +87,10 @@ class Ball:
             self.ballY = 521
         else:
             self.ballY_change = -self.ballY_change
+
+    def isGoal(self):
+        if 0 < self.ballX < 65 and 215 < self.ballY < 368:
+            return 1
+        if 885 < self.ballX < 940 and 215 < self.ballY < 368:
+            return 2
+        return 0

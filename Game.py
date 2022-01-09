@@ -3,12 +3,14 @@ import User
 import AI
 import Background
 import Ball
+import time
 
 
 # Main game class
 class Game:
     # Constructor
     def __init__(self):
+        self.goal = [0, 0]
         self.running = True
         try:
             pygame.init()
@@ -36,6 +38,7 @@ class Game:
     def handleEvent(self):
 
         self.player.UpdateRect()
+        self.ai.UpdateRect()
         self.ball.UpdateRect()
 
         # Runs through all pygame events
@@ -48,16 +51,16 @@ class Game:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     self.l = True
-                    self.player.playerX_change -= 0.3
+                    self.player.playerX_change -= self.player.player_speed
                 if event.key == pygame.K_RIGHT:
                     self.r = True
-                    self.player.playerX_change = 0.3
+                    self.player.playerX_change = self.player.player_speed
                 if event.key == pygame.K_UP:
                     self.u = True
-                    self.player.playerY_change = -0.3
+                    self.player.playerY_change = -self.player.player_speed
                 if event.key == pygame.K_DOWN:
                     self.d = True
-                    self.player.playerY_change = 0.3
+                    self.player.playerY_change = self.player.player_speed
 
             if self.r:
                 self.player.ChangeTex(self.player.playerRight)
@@ -92,11 +95,21 @@ class Game:
                     self.player.playerY_change = 0
 
         self.ball.CollisionCheck(self.player)
+        self.ball.UpdatePosition()
+
+        self.ball.CollisionCheck(self.ai)
+        self.ball.UpdatePosition()
 
         # Updating players to new positions
         self.player.UpdatePosition()
-        # self.ai.UpdatePosition(self.ball)
-        self.ball.UpdatePosition()
+        self.ai.UpdatePosition(self.ball)
+
+        goal_check = self.ball.isGoal()
+
+        if goal_check == 1:
+            self.goal[0] += 1
+        elif goal_check == 2:
+            self.goal[1] += 1
 
 
         # self.ball.CollisionCheck(self.ai)
