@@ -4,6 +4,7 @@ import AI
 import Background
 import Ball
 import Menu
+import TextureManager as tm
 import time
 
 
@@ -19,7 +20,7 @@ class Game:
             self.running = False
 
         self.runMenu = True
-
+        self.pauseMenu = True
         self.background = Background.Background("Images/background.jpeg")
         self.player = User.User("Images/player1.png")
         self.ai = AI.AI("Images/player2.png")
@@ -33,6 +34,10 @@ class Game:
         self.l = False
         self.u = False
         self.d = False
+        self.goalL = tm.Texture("Images/goalL.png")
+        self.goalL = pygame.transform.scale(self.goalL, (65, 153))
+        self.goalR = tm.Texture("Images/goalR.png")
+        self.goalR = pygame.transform.scale(self.goalR, (65, 153))
 
     # Returns the variable that tells if game is running or not
     def isRunning(self):
@@ -51,6 +56,13 @@ class Game:
             if run:
                 self.running = False
 
+        if self.pauseMenu:
+            run = self.menu.pauseMenu(self.screen)
+            self.pauseMenu = False
+            if run:
+                self.running = False
+
+
         # Runs through all pygame events
         for event in pygame.event.get():
             # If the close button is pressed, game ends
@@ -60,7 +72,7 @@ class Game:
             # Players movement for now
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.runMenu = True
+                    self.pauseMenu = True
                 if event.key == pygame.K_LEFT:
                     self.l = True
                     self.player.playerX_change -= self.player.player_speed
@@ -131,6 +143,8 @@ class Game:
         self.player.Render(self.screen)
         self.ai.Render(self.screen)
         self.ball.Render(self.screen)
+        self.screen.blit(self.goalL, (-20, 215))
+        self.screen.blit(self.goalR, (950, 215))
         pygame.display.update()
 
     # Clean memory when program is closed
