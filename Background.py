@@ -4,8 +4,8 @@ import TextureManager as tm
 # Class to handle the background
 class Background:
     # Constructor
-    def __init__(self):
-        self.texture = tm.Texture("Images/background.jpeg")
+    def __init__(self, image):
+        self.texture = tm.Texture(image)
 
     # Function to render the background
     def Render(self, screen):

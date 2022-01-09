@@ -3,6 +3,7 @@ import User
 import AI
 import Background
 import Ball
+import Menu
 import time
 
 
@@ -17,10 +18,13 @@ class Game:
         except:
             self.running = False
 
-        self.background = Background.Background()
+        self.runMenu = True
+
+        self.background = Background.Background("Images/background.jpeg")
         self.player = User.User("Images/player1.png")
         self.ai = AI.AI("Images/player2.png")
         self.ball = Ball.Ball()
+        self.menu = Menu.Menu()
         self.screen = pygame.display.set_mode((1000, 585))
         pygame.display.set_caption("Cars")
         self.icon = pygame.image.load('Images/sport-car.png')
@@ -41,6 +45,12 @@ class Game:
         self.ai.UpdateRect()
         self.ball.UpdateRect()
 
+        if self.runMenu:
+            run = self.menu.mainMenu(self.screen)
+            self.runMenu = False
+            if run:
+                self.running = False
+
         # Runs through all pygame events
         for event in pygame.event.get():
             # If the close button is pressed, game ends
@@ -49,6 +59,8 @@ class Game:
 
             # Players movement for now
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.runMenu = True
                 if event.key == pygame.K_LEFT:
                     self.l = True
                     self.player.playerX_change -= self.player.player_speed
@@ -110,7 +122,6 @@ class Game:
             self.goal[0] += 1
         elif goal_check == 2:
             self.goal[1] += 1
-
 
         # self.ball.CollisionCheck(self.ai)
 
