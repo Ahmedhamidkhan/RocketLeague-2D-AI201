@@ -16,13 +16,14 @@ class AI(Players):
 
     # Will be used to control the movement of the AI players
     def UpdatePosition(self, ball):
-        if (ball.ballX + ball.size/2) > self.playerX:
-            self.playerX += self.player_speed
-        else:
-            self.playerX -= self.player_speed
-
-        if (ball.ballY + ball.size/2) > (self.playerY + self.size/2):
-            self.playerY += self.player_speed
-        else:
-            self.playerY -= self.player_speed
+        playerX = 2
+        # if (ball.ballX + ball.size/2) > self.playerX:
+        #     self.playerX += self.player_speed
+        # else:
+        #     self.playerX -= self.player_speed
+        #
+        # if (ball.ballY + ball.size/2) > (self.playerY + self.size/2):
+        #     self.playerY += self.player_speed
+        # else:
+        #     self.playerY -= self.player_speed
 

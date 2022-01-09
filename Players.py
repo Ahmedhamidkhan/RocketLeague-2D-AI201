@@ -11,7 +11,7 @@ class Players:
         self.playerY = 0
         self.playerX_change = 0
         self.playerY_change = 0
-        self.player_speed = 0.2
+        self.player_speed = 0.3
         self.texture = tm.Texture(title)
         self.texture = pygame.transform.scale(self.texture, (self.size, self.size))
         self.rect = self.texture.get_rect(topleft=(self.playerX, self.playerY))

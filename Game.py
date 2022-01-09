@@ -12,24 +12,20 @@ import time
 class Game:
     # Constructor
     def __init__(self):
-        self.goal = [0, 0]
         self.running = True
         try:
             pygame.init()
         except:
             self.running = False
 
-        self.runMenu = True
-        self.pauseMenu = True
-        self.background = Background.Background("Images/background.jpeg")
-        self.player = User.User("Images/player1.png")
-        self.ai = AI.AI("Images/player2.png")
-        self.ball = Ball.Ball()
-        self.menu = Menu.Menu()
+        self.mainMenu = True
+        self.pauseMenu = False
+
         self.screen = pygame.display.set_mode((1000, 585))
         pygame.display.set_caption("Cars")
         self.icon = pygame.image.load('Images/sport-car.png')
         pygame.display.set_icon(self.icon)
+
         self.r = False
         self.l = False
         self.u = False
@@ -38,6 +34,14 @@ class Game:
         self.goalL = pygame.transform.scale(self.goalL, (65, 153))
         self.goalR = tm.Texture("Images/goalR.png")
         self.goalR = pygame.transform.scale(self.goalR, (65, 153))
+
+    def Initialization(self):
+        self.goal = [0, 0]
+        self.background = Background.Background("Images/background.jpeg")
+        self.player = User.User("Images/player1.png")
+        self.ai = AI.AI("Images/player2.png")
+        self.ball = Ball.Ball()
+        self.menu = Menu.Menu()
 
     # Returns the variable that tells if game is running or not
     def isRunning(self):
@@ -50,9 +54,9 @@ class Game:
         self.ai.UpdateRect()
         self.ball.UpdateRect()
 
-        if self.runMenu:
+        if self.mainMenu:
             run = self.menu.mainMenu(self.screen)
-            self.runMenu = False
+            self.mainMenu = False
             if run:
                 self.running = False
 
@@ -61,7 +65,6 @@ class Game:
             self.pauseMenu = False
             if run:
                 self.running = False
-
 
         # Runs through all pygame events
         for event in pygame.event.get():
@@ -130,10 +133,20 @@ class Game:
 
         goal_check = self.ball.isGoal()
 
+        win = ""
+
         if goal_check == 1:
-            self.goal[0] += 1
-        elif goal_check == 2:
             self.goal[1] += 1
+            win = "AI"
+        elif goal_check == 2:
+            self.goal[0] += 1
+            win = "User"
+
+        if self.goal[0] == 5 or self.goal[1] == 5:
+            self.GameOver(win)
+
+        if goal_check:
+            self.Reset()
 
         # self.ball.CollisionCheck(self.ai)
 
@@ -145,10 +158,22 @@ class Game:
         self.ball.Render(self.screen)
         self.screen.blit(self.goalL, (-20, 215))
         self.screen.blit(self.goalR, (950, 215))
+        self.menu.drawText(str(self.goal[0])+" | "+str(self.goal[1]), self.screen, 485, 3, 20)
         pygame.display.update()
 
     # Clean memory when program is closed
     def Clean(self):
         pygame.quit()
 
-    # def GameOver(self):
+    def Reset(self):
+        self.player = User.User("Images/player1.png")
+        self.ai = AI.AI("Images/player2.png")
+        self.ball = Ball.Ball()
+
+    def GameOver(self, win):
+        run = self.menu.endMenu(self.screen, win)
+        if run:
+            self.running = False
+
+        self.Initialization()
+

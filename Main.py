@@ -4,6 +4,7 @@ import Game
 
 # Creating game object
 g = Game.Game()
+g.Initialization()
 
 # Main game loop
 while g.isRunning():
